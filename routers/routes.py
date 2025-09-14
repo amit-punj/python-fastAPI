@@ -1,26 +1,29 @@
-from fastapi import APIRouter
-from controllers.users_controller import get_users,UserbyID,create_user,update_user,delete_user
+from fastapi import APIRouter, Request  
+import controllers.users_controller as user_controller;
 # from controllers.products import products
 
 router = APIRouter()
 
+@router.get("/api/health")
+def read_root():
+    return {"message": "Hello, FastAPI Health API is running!"}
 
 @router.get('/users')
 def users_route():
-    return get_users()
+    return user_controller.get_users()
 
 @router.get('/UserbyID')
 def users_route(user_id: int):
-    return UserbyID(user_id)
+    return user_controller.UserbyID(user_id)
 
 @router.post('/create_user')
-def user_route(user: dict):
-    return create_user(user)
+def user_route(request: Request,name: str, age: int):
+    return user_controller.create_user(name, age)
 
 @router.put('/update_user')
 def user_route():
-    return update_user()
+    return user_controller.update_user()
 
 @router.delete('/delete_user')
 def user_route():
-    return delete_user()
+    return user_controller.delete_user()

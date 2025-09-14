@@ -34,10 +34,10 @@ def UserbyID(user_id: int):
     return {"user": user }  
 
 
-def create_user(user: dict):
+def create_user(request, name: str, age: int):
     print('inside create user controller')
-    print('user', user)
-    return {"message": "User created successfully", "user": user}
+    print('user', request.json())
+    return {"message": "User created successfully", "name": name, "age": age}
 
 def update_user():
     print('inside update user controller')

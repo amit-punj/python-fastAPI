@@ -2,9 +2,9 @@ from fastapi import FastAPI, Request
 from routers.routes import router
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
+from middleware.ageMiddleware import check_age_middleware
 
 app = FastAPI()
-
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
@@ -21,6 +21,8 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     )
 
 
+
+app.middleware("http")(check_age_middleware)
 app.include_router(router)
 
 @app.get("/")

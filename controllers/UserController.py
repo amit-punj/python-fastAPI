@@ -1,10 +1,12 @@
 from google import genai
 import json
 from pathlib import Path
+from database import db
+import utils.helpers as helpers
 
 DATA_FILE = Path("models/users.json")
 DATA_FILE.parent.mkdir(parents=True, exist_ok=True)  # ensure folder exists
-
+user_collection = db["users"]
 # initialize file if it doesn't exist
 if not DATA_FILE.exists():
     DATA_FILE.write_text("[]")
@@ -29,14 +31,13 @@ def users():
     users = ['amit', 'sumit', 'rahul']
     return {"users": users }
 
-def get_users():
+def get_users(current_user = None):
     try:
-        with open(DATA_FILE, "r") as f:
-            users = json.load(f)
+        users = user_collection.find({}, {"password": 0})  # Exclude password field
     except json.JSONDecodeError:
         users = []  # in case file is corrupted
 
-    return {"message": "Users fetched successfully", "users": users }
+    return {"message": "Users fetched successfully", "users": helpers.serialize_docs(users) }
 
 def UserbyID(user_id: int):
     try:

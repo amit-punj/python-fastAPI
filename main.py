@@ -22,7 +22,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 
 
 
-app.middleware("http")(check_age_middleware)
+# app.middleware("http")(check_age_middleware)
 app.include_router(router)
 
 @app.get("/")
